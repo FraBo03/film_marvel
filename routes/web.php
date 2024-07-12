@@ -14,6 +14,7 @@ Route::post('/add_img/{id}', [FilmController::class, 'addImage'])->name('add_img
 Route::get('/edit/{id}', [FilmController::class,'edit'])->name("edit")->middleware('auth');
 Route::post('/edit/{id}', [FilmController::class,'do_edit']);
 Route::get('/info/{id}', [FilmController::class,'info'])->name("info");
+Route::post('/comment/{id}', [FilmController::class, 'storeComment'])->name('comment.store');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);

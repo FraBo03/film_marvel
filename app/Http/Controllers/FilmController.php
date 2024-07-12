@@ -129,12 +129,27 @@ class FilmController extends Controller
     }
 
     public function info($id){
-        $film = Film::where('id', $id)->first();
+        $film = Film::with(['comments.user'])->find($id);
 
         if (!$film) {
             abort(404, 'Film not found');
         }
         
         return view('filmInfo', ['movie'=>$film]);
+    }
+
+    public function storeComment(Request $request, $id)
+    {
+        $request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
+
+        $film = Film::findOrFail($id);
+        $film->comments()->create([
+            'user_id' => auth()->id(),
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->route('info', $id);
     }
 }
